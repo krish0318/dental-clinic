@@ -1,298 +1,387 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { MapPin, Phone, Clock, Mail, CheckCircle2, Star, ChevronRight, Stethoscope, Syringe, ShieldCheck, Smile } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { motion } from "motion/react"
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  MapPin, Phone, Clock, Mail, CheckCircle2, Star, ChevronRight, 
+  Stethoscope, Syringe, ShieldCheck, Smile, Calendar, MessageSquare,
+  Award, HeartPulse, UserCheck, HelpCircle
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Animation Variants
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" }
+  })
+};
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState("all");
+
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-          <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white">
+    <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-teal-100 selection:text-teal-900">
+      
+      {/* --- Navigation --- */}
+      <nav className="fixed top-0 z-[100] w-full border-b border-slate-100 bg-white/70 backdrop-blur-xl">
+        <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-2.5"
+          >
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 text-white shadow-lg shadow-teal-200">
               <Smile className="h-6 w-6" />
             </div>
-            <span className="text-xl font-bold tracking-tight text-teal-900">Vinayak Dental Clinic</span>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold leading-none tracking-tight text-slate-900">Vinayak</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-teal-600">Dental Clinic</span>
+            </div>
+          </motion.div>
+
+          <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600">
+            {["Home", "Services", "About", "Reviews", "Contact"].map((item) => (
+              <Link key={item} href={`#${item.toLowerCase()}`} className="relative hover:text-teal-600 transition-colors group">
+                {item}
+                <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-teal-600 transition-all group-hover:w-full" />
+              </Link>
+            ))}
           </div>
-          <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-            <Link href="#home" className="hover:text-teal-600 transition-colors">Home</Link>
-            <Link href="#services" className="hover:text-teal-600 transition-colors">Services</Link>
-            <Link href="#about" className="hover:text-teal-600 transition-colors">About</Link>
-            <Link href="#contact" className="hover:text-teal-600 transition-colors">Contact</Link>
+
+          <div className="flex items-center gap-4">
+            <Link href="tel:+919876543210" className="hidden sm:block text-sm font-bold text-slate-900 hover:text-teal-600">
+              +91 98765 43210
+            </Link>
+            <Button className="bg-slate-900 hover:bg-teal-600 text-white rounded-full px-6 transition-all duration-300 shadow-lg hover:shadow-teal-100">
+              Book Visit
+            </Button>
           </div>
-          <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6">
-            Book Now
-          </Button>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section id="home" className="relative overflow-hidden bg-white pt-16 md:pt-24 pb-32">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      {/* --- Hero Section --- */}
+      <section id="home" className="relative overflow-hidden pt-32 pb-20 lg:pt-48 lg:pb-32">
+        {/* Animated Background Elements */}
+        <div className="absolute top-0 left-1/2 -z-10 h-[1000px] w-[1000px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-b from-teal-50/50 to-transparent blur-3xl" />
+        <div className="absolute -top-24 -right-24 -z-10 h-96 w-96 rounded-full bg-emerald-50/50 blur-3xl" />
+
         <div className="container relative mx-auto px-4 md:px-6">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
-            <div className="flex flex-col justify-center space-y-8">
-              <div className="space-y-4">
-                <div className="inline-flex items-center rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-sm font-medium text-teal-800">
-                  <MapPin className="mr-2 h-4 w-4" />
-                  Bhiwani, Haryana
-                </div>
-                <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl xl:text-6xl/none">
-                  Your Smile, <br />
-                  <span className="text-teal-600">Our Priority.</span>
-                </h1>
-                <p className="max-w-[600px] text-lg text-slate-600 md:text-xl leading-relaxed">
-                  Experience world-class dental care at Vinayak Dental Clinic. We combine advanced technology with compassionate care to give you the perfect smile.
-                </p>
+          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
+            <motion.div 
+              custom={0}
+              initial="hidden"
+              animate="visible"
+              variants={fadeIn}
+              className="flex flex-col space-y-8"
+            >
+              <div className="inline-flex items-center rounded-full border border-teal-100 bg-teal-50/50 px-4 py-1.5 text-sm font-semibold text-teal-700 backdrop-blur-sm">
+                <span className="mr-2 flex h-2 w-2 rounded-full bg-teal-500 animate-pulse" />
+                Trusted Dental Care in Bhiwani
               </div>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-teal-600 hover:bg-teal-700 text-white rounded-full h-12 px-8 text-base">
-                  Book Appointment
-                  <ChevronRight className="ml-2 h-4 w-4" />
+              
+              <h1 className="text-5xl font-black tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
+                Modern Dentistry, <br />
+                <span className="bg-gradient-to-r from-teal-600 to-emerald-500 bg-clip-text text-transparent">Human Touch.</span>
+              </h1>
+              
+              <p className="max-w-[540px] text-lg leading-relaxed text-slate-600 md:text-xl">
+                Combining 15+ years of clinical excellence with state-of-the-art technology to give you a smile that radiates confidence.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Button size="lg" className="h-14 rounded-2xl bg-teal-600 px-8 text-base font-bold text-white shadow-xl shadow-teal-200 hover:bg-teal-700 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                  Schedule Appointment
+                  <Calendar className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="rounded-full h-12 px-8 text-base border-teal-200 text-teal-700 hover:bg-teal-50">
-                  <Phone className="mr-2 h-4 w-4" />
-                  Call Us Now
+                <Button size="lg" variant="outline" className="h-14 rounded-2xl border-2 border-slate-100 px-8 text-base font-bold text-slate-700 hover:bg-slate-50 transition-all">
+                  View Our Results
                 </Button>
               </div>
-              <div className="flex items-center gap-4 text-sm text-slate-600">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="h-8 w-8 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center overflow-hidden">
-                      <Image src={`https://picsum.photos/seed/face${i}/100/100`} alt="Patient" width={32} height={32} className="object-cover" />
+
+              <div className="flex items-center gap-6 pt-4">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-12 w-12 rounded-2xl border-4 border-white bg-slate-100 shadow-sm overflow-hidden">
+                      <Image src={`https://picsum.photos/seed/patient${i}/100/100`} alt="User" width={48} height={48} />
                     </div>
                   ))}
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border-4 border-white bg-teal-600 text-[10px] font-bold text-white">
+                    5k+
+                  </div>
                 </div>
-                <p>Trusted by <strong>5000+</strong> happy patients in Bhiwani</p>
+                <div className="h-10 w-[1px] bg-slate-200" />
+                <div>
+                  <div className="flex items-center gap-1 text-amber-500">
+                    {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
+                  </div>
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">4.9/5 Average Rating</p>
+                </div>
               </div>
-            </div>
-            <div className="relative mx-auto w-full max-w-[500px] lg:max-w-none">
-              <div className="relative aspect-square md:aspect-[4/3] lg:aspect-square overflow-hidden rounded-3xl bg-slate-100">
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-2xl shadow-slate-200">
                 <Image
-                  src="https://picsum.photos/seed/dentist/800/800"
-                  alt="Dentist at work"
+                  src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop"
+                  alt="Modern Clinic"
                   fill
                   className="object-cover"
-                  priority
                 />
-                <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-slate-900/10"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent" />
               </div>
-              {/* Floating Badge */}
-              <div className="absolute -bottom-6 -left-6 rounded-2xl bg-white p-6 shadow-xl ring-1 ring-slate-900/5">
+
+              {/* Interactive Floating Card */}
+              <motion.div 
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -bottom-8 -left-8 rounded-3xl bg-white p-6 shadow-2xl ring-1 ring-slate-100"
+              >
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-600">
-                    <Star className="h-6 w-6 fill-current" />
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-50 text-teal-600">
+                    <Award className="h-8 w-8" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-slate-500">Google Reviews</p>
-                    <p className="text-xl font-bold text-slate-900">4.9/5.0</p>
+                    <p className="text-sm font-bold text-slate-400 uppercase tracking-tighter">Certified Expert</p>
+                    <p className="text-xl font-black text-slate-900">Dr. V. K. Sharma</p>
                   </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="bg-slate-50 py-24">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Comprehensive Dental Services</h2>
-            <p className="max-w-[700px] text-slate-600 md:text-lg">
-              We offer a wide range of dental treatments under one roof, using the latest technology and techniques.
-            </p>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {/* --- Impact Stats --- */}
+      <section className="border-y border-slate-100 bg-slate-50/50 py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {[
-              {
-                title: "Root Canal Treatment",
-                description: "Painless RCT procedures to save your natural teeth and relieve severe toothache.",
-                icon: Stethoscope,
-              },
-              {
-                title: "Dental Implants",
-                description: "Permanent and natural-looking replacement for missing teeth to restore your smile.",
-                icon: ShieldCheck,
-              },
-              {
-                title: "Teeth Whitening",
-                description: "Professional teeth whitening services for a brighter, more confident smile.",
-                icon: Smile,
-              },
-              {
-                title: "Braces & Aligners",
-                description: "Straighten your teeth with traditional braces or invisible clear aligners.",
-                icon: CheckCircle2,
-              },
-              {
-                title: "Tooth Extraction",
-                description: "Safe and painless removal of damaged or wisdom teeth by expert surgeons.",
-                icon: Syringe,
-              },
-              {
-                title: "Pediatric Dentistry",
-                description: "Specialized, gentle dental care for children in a friendly environment.",
-                icon: Smile,
-              },
-            ].map((service, index) => (
-              <Card key={index} className="border-none shadow-md hover:shadow-lg transition-shadow bg-white rounded-2xl overflow-hidden">
-                <CardHeader>
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-teal-50 text-teal-600">
-                    <service.icon className="h-6 w-6" />
-                  </div>
-                  <CardTitle className="text-xl">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base text-slate-600">{service.description}</CardDescription>
-                </CardContent>
-              </Card>
+              { label: "Happy Patients", value: "12,000+", icon: HeartPulse },
+              { label: "Years Experience", value: "18+", icon: Clock },
+              { label: "Dental Implants", value: "2,500+", icon: ShieldCheck },
+              { label: "Root Canals", value: "4,000+", icon: Stethoscope },
+            ].map((stat, i) => (
+              <div key={i} className="flex flex-col items-center text-center space-y-2">
+                <stat.icon className="h-6 w-6 text-teal-600 mb-2" />
+                <span className="text-3xl font-black text-slate-900">{stat.value}</span>
+                <span className="text-sm font-medium text-slate-500">{stat.label}</span>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="bg-white py-24">
+      {/* --- Services Section --- */}
+      <section id="services" className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="mb-16 flex flex-col items-center text-center space-y-4">
+            <h2 className="text-sm font-black uppercase tracking-[0.3em] text-teal-600">Our Expertise</h2>
+            <h3 className="text-4xl font-bold text-slate-900 sm:text-5xl">Specialized Dental Solutions</h3>
+            <p className="max-w-2xl text-lg text-slate-500 leading-relaxed">
+              We provide comprehensive care using the latest painless technology, ensuring every visit is stress-free.
+            </p>
+          </div>
+
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                title: "Advanced Root Canal",
+                desc: "Laser-assisted, single-sitting painless RCT procedures.",
+                icon: Stethoscope,
+                color: "bg-blue-500"
+              },
+              {
+                title: "Dental Implants",
+                desc: "Premium titanium implants for a permanent, natural smile.",
+                icon: ShieldCheck,
+                color: "bg-teal-500"
+              },
+              {
+                title: "Cosmetic Veneers",
+                desc: "Transform your appearance with custom porcelain veneers.",
+                icon: Smile,
+                color: "bg-emerald-500"
+              },
+              {
+                title: "Orthodontics",
+                desc: "Invisalign and clear aligners for perfect teeth alignment.",
+                icon: CheckCircle2,
+                color: "bg-indigo-500"
+              },
+              {
+                title: "Pediatric Care",
+                desc: "A friendly, welcoming environment designed for kids.",
+                icon: HeartPulse,
+                color: "bg-rose-500"
+              },
+              {
+                title: "Digital X-Rays",
+                desc: "Low-radiation 3D imaging for precise diagnosis.",
+                icon: UserCheck,
+                color: "bg-amber-500"
+              },
+            ].map((service, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ y: -10 }}
+                className="group relative rounded-[2rem] bg-white p-8 shadow-xl shadow-slate-100 ring-1 ring-slate-100 transition-all hover:shadow-teal-100"
+              >
+                <div className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg ${service.color}`}>
+                  <service.icon className="h-7 w-7" />
+                </div>
+                <h4 className="mb-3 text-xl font-bold text-slate-900">{service.title}</h4>
+                <p className="mb-6 text-slate-500 leading-relaxed">{service.desc}</p>
+                <Link href="#" className="flex items-center text-sm font-bold text-teal-600 group-hover:gap-2 transition-all">
+                  Read more <ChevronRight className="h-4 w-4" />
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- FAQ / Objection Handling --- */}
+      <section className="bg-slate-900 py-24 text-white">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="grid gap-12 lg:grid-cols-2 items-center">
-            <div className="relative aspect-square md:aspect-[4/3] overflow-hidden rounded-3xl">
-              <Image
-                src="https://picsum.photos/seed/clinic/800/600"
-                alt="Vinayak Dental Clinic Interior"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">About Vinayak Dental Clinic</h2>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                Located in the heart of Bhiwani, Haryana, Vinayak Dental Clinic is dedicated to providing exceptional dental care to our community. Our team of experienced professionals believes in a patient-first approach, ensuring comfort and quality in every treatment.
-              </p>
-              <ul className="space-y-4">
-                {[
-                  "State-of-the-art dental equipment",
-                  "Strict sterilization and hygiene protocols",
-                  "Experienced and friendly staff",
-                  "Affordable and transparent pricing"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-slate-700">
-                    <CheckCircle2 className="h-5 w-5 text-teal-600 flex-shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full mt-4 px-8">
-                Learn More About Us
+          <div className="grid gap-16 lg:grid-cols-2">
+            <div>
+              <h2 className="mb-6 text-4xl font-bold leading-tight">Frequently Asked <br /> Dental Questions</h2>
+              <p className="mb-10 text-slate-400">Can't find what you're looking for? Reach out to our team directly.</p>
+              <Button className="rounded-full bg-teal-500 hover:bg-teal-400">
+                Ask a Question
               </Button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="bg-slate-900 py-24 text-slate-50">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid gap-12 lg:grid-cols-2">
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">Visit Our Clinic</h2>
-                <p className="text-slate-400 text-lg max-w-md">
-                  We are conveniently located in Bhiwani. Drop by or call us to schedule your appointment.
-                </p>
-              </div>
-              
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-teal-400 shrink-0">
-                    <MapPin className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg">Location</h3>
-                    <p className="text-slate-400 mt-1">
-                      Vinayak Dental Clinic<br />
-                      Main Market Road, Near Clock Tower<br />
-                      Bhiwani, Haryana 127021
-                    </p>
-                  </div>
+            <div className="space-y-4">
+              {[
+                { q: "Is the Root Canal treatment painful?", a: "Not at all. We use advanced local anesthesia and rotary technology to ensure the procedure is as comfortable as a regular filling." },
+                { q: "How much do dental implants cost?", a: "Costs vary based on the material and bone health. We offer transparent pricing and EMI options to make it affordable." },
+                { q: "Do you accept emergency walk-ins?", a: "Yes, we prioritize dental emergencies like severe toothaches or broken teeth during clinic hours." }
+              ].map((faq, i) => (
+                <div key={i} className="rounded-2xl bg-slate-800/50 p-6 ring-1 ring-slate-700">
+                  <h4 className="flex items-center gap-3 font-bold text-teal-400 mb-2">
+                    <HelpCircle className="h-5 w-5" /> {faq.q}
+                  </h4>
+                  <p className="text-slate-400 text-sm leading-relaxed">{faq.a}</p>
                 </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-teal-400 shrink-0">
-                    <Phone className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg">Phone</h3>
-                    <p className="text-slate-400 mt-1">+91 98765 43210</p>
-                    <p className="text-slate-400">+91 12345 67890</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-teal-400 shrink-0">
-                    <Clock className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg">Clinic Hours</h3>
-                    <p className="text-slate-400 mt-1">Mon - Sat: 9:00 AM - 8:00 PM</p>
-                    <p className="text-slate-400">Sunday: 10:00 AM - 2:00 PM</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-slate-800 rounded-3xl p-8 lg:p-10">
-              <h3 className="text-2xl font-bold mb-6">Request an Appointment</h3>
-              <form className="space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium text-slate-300">Full Name</label>
-                    <input id="name" className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-50 placeholder:text-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500" placeholder="John Doe" />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="phone" className="text-sm font-medium text-slate-300">Phone Number</label>
-                    <input id="phone" className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-50 placeholder:text-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500" placeholder="+91 98765 43210" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="service" className="text-sm font-medium text-slate-300">Service Required</label>
-                  <select id="service" className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-50 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 appearance-none">
-                    <option value="">Select a service</option>
-                    <option value="rct">Root Canal</option>
-                    <option value="implants">Dental Implants</option>
-                    <option value="whitening">Teeth Whitening</option>
-                    <option value="braces">Braces</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium text-slate-300">Message (Optional)</label>
-                  <textarea id="message" rows={4} className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-50 placeholder:text-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500" placeholder="Tell us about your dental issue..."></textarea>
-                </div>
-                <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white rounded-xl h-12 text-base mt-2">
-                  Submit Request
-                </Button>
-              </form>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-slate-950 py-8 text-center text-slate-400">
+      {/* --- Contact / Booking --- */}
+      <section id="contact" className="relative py-24 overflow-hidden">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Smile className="h-6 w-6 text-teal-600" />
-            <span className="text-xl font-bold text-slate-50">Vinayak Dental Clinic</span>
+          <div className="relative z-10 grid gap-12 lg:grid-cols-5">
+            <div className="lg:col-span-2 space-y-12">
+              <div>
+                <h2 className="text-4xl font-bold text-slate-900 mb-6">Let's Fix Your Smile</h2>
+                <p className="text-slate-500">Visit our state-of-the-art facility in the heart of Bhiwani.</p>
+              </div>
+
+              <div className="space-y-8">
+                <div className="flex gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal-50 text-teal-600">
+                    <MapPin className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h5 className="font-bold text-slate-900">Clinic Address</h5>
+                    <p className="text-slate-500 text-sm">Main Market, Opposite Clock Tower, Bhiwani, HR 127021</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+                    <Phone className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h5 className="font-bold text-slate-900">Emergency Contact</h5>
+                    <p className="text-slate-500 text-sm">+91 98765 43210 (24/7 Helpline)</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-[2rem] bg-teal-600 p-8 text-white shadow-2xl shadow-teal-200">
+                <h5 className="text-xl font-bold mb-2">Working Hours</h5>
+                <div className="space-y-2 opacity-90 text-sm">
+                  <div className="flex justify-between border-b border-teal-500/50 pb-2">
+                    <span>Monday - Saturday</span>
+                    <span>9:00 AM - 8:30 PM</span>
+                  </div>
+                  <div className="flex justify-between pt-1">
+                    <span>Sunday</span>
+                    <span>10:00 AM - 2:00 PM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-3">
+              <div className="rounded-[2.5rem] bg-white p-8 shadow-2xl shadow-slate-200 ring-1 ring-slate-100 md:p-12">
+                <form className="grid gap-6">
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400">Full Name</label>
+                      <input className="w-full rounded-2xl bg-slate-50 px-5 py-4 text-sm outline-none ring-2 ring-transparent transition-all focus:ring-teal-500/20 focus:bg-white" placeholder="Rahul Singh" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400">Phone Number</label>
+                      <input className="w-full rounded-2xl bg-slate-50 px-5 py-4 text-sm outline-none ring-2 ring-transparent transition-all focus:ring-teal-500/20 focus:bg-white" placeholder="+91 00000 00000" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-black uppercase tracking-widest text-slate-400">Service Needed</label>
+                    <select className="w-full rounded-2xl bg-slate-50 px-5 py-4 text-sm outline-none ring-2 ring-transparent transition-all focus:ring-teal-500/20 focus:bg-white appearance-none">
+                      <option>General Checkup</option>
+                      <option>Root Canal (RCT)</option>
+                      <option>Braces / Aligners</option>
+                      <option>Dental Implants</option>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-black uppercase tracking-widest text-slate-400">How can we help?</label>
+                    <textarea rows={4} className="w-full rounded-2xl bg-slate-50 px-5 py-4 text-sm outline-none ring-2 ring-transparent transition-all focus:ring-teal-500/20 focus:bg-white" placeholder="Describe your dental concern..."></textarea>
+                  </div>
+                  <Button className="h-16 rounded-2xl bg-slate-900 text-lg font-bold hover:bg-teal-600 transition-all">
+                    Confirm Appointment Request
+                  </Button>
+                </form>
+              </div>
+            </div>
           </div>
-          <p className="text-sm">
-            &copy; {new Date().getFullYear()} Vinayak Dental Clinic, Bhiwani. All rights reserved.
-          </p>
+        </div>
+      </section>
+
+      {/* --- Footer --- */}
+      <footer className="bg-slate-50 py-12 border-t border-slate-200">
+        <div className="container mx-auto px-4 text-center">
+          <div className="flex items-center justify-center gap-2.5 mb-6">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-600 text-white">
+              <Smile className="h-5 w-5" />
+            </div>
+            <span className="text-lg font-bold tracking-tight text-slate-900">Vinayak Dental</span>
+          </div>
+          <p className="text-sm text-slate-500 mb-6">Providing quality dental care since 2008 in Bhiwani, Haryana.</p>
+          <div className="flex justify-center gap-8 mb-8">
+            <Link href="#" className="text-slate-400 hover:text-teal-600 transition-colors">Facebook</Link>
+            <Link href="#" className="text-slate-400 hover:text-teal-600 transition-colors">Instagram</Link>
+            <Link href="#" className="text-slate-400 hover:text-teal-600 transition-colors">Google Maps</Link>
+          </div>
+          <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+            &copy; {new Date().getFullYear()} Vinayak Dental Clinic. All Rights Reserved.
+          </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
