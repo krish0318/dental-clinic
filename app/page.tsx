@@ -29,44 +29,56 @@ export default function Home() {
     <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-teal-100 selection:text-teal-900">
       
       {/* --- Navigation --- */}
-      <nav className="fixed top-0 z-[100] w-full border-b border-slate-100 bg-white/70 backdrop-blur-xl">
-        <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2.5"
-          >
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 text-white shadow-lg shadow-teal-200">
-              <Smile className="h-6 w-6" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold leading-none tracking-tight text-slate-900">Vinayak</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-teal-600">Dental Clinic</span>
-            </div>
-          </motion.div>
-
-          <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600">
-            {["Home", "Services", "About", "Reviews", "Contact"].map((item) => (
-              <Link key={item} href={`#${item.toLowerCase()}`} className="relative hover:text-teal-600 transition-colors group">
-                {item}
-                <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-teal-600 transition-all group-hover:w-full" />
-              </Link>
-            ))}
+      <nav className="fixed top-6 inset-x-0 z-[100] flex justify-center px-4">
+        
+          <motion.nav
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="flex items-center justify-between w-full max-w-5xl h-14 px-3 rounded-full border border-white/40 bg-white/60 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.05)]"
+      >
+        {/* --- Logo Space --- */}
+        <Link href="/" className="flex items-center gap-3 pl-2 group">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-600 text-white transition-transform duration-300 group-hover:rotate-12">
+            <Smile className="h-5 w-5" />
           </div>
+          <span className="text-sm font-bold tracking-tight text-slate-900 uppercase">
+            Vinayak
+          </span>
+        </Link>
 
-          <div className="flex items-center gap-4">
-            <Link href="tel:+919876543210" className="hidden sm:block text-sm font-bold text-slate-900 hover:text-teal-600">
-              +91 98765 43210
+        {/* --- Minimalist Links --- */}
+        <div className="hidden md:flex items-center gap-1 bg-slate-100/50 p-1 rounded-full border border-slate-200/50">
+          {["Home", "Services", "About", "Contact"].map((item) => (
+            <Link
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              className="px-4 py-1.5 text-xs font-bold text-slate-500 rounded-full transition-all hover:text-slate-900 hover:bg-white"
+            >
+              {item}
             </Link>
-            <Button className="bg-slate-900 hover:bg-teal-600 text-white rounded-full px-6 transition-all duration-300 shadow-lg hover:shadow-teal-100">
-              Book Visit
-            </Button>
-          </div>
+          ))}
         </div>
+
+        {/* --- Action Area --- */}
+        <div className="flex items-center gap-2">
+          <Link 
+            href="tel:+919876543210" 
+            className="hidden sm:block px-4 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-teal-600 transition-colors"
+          >
+            Support
+          </Link>
+          <Button 
+            className="h-10 px-6 rounded-full bg-slate-900 text-[11px] font-black uppercase tracking-widest text-white hover:bg-teal-600 hover:shadow-lg hover:shadow-teal-100 transition-all duration-300 active:scale-95"
+          >
+            Book Visit
+          </Button>
+        </div>
+      </motion.nav>
+       
       </nav>
 
       {/* --- Hero Section --- */}
-      <section id="home" className="relative overflow-hidden pt-32 pb-20 lg:pt-48 lg:pb-32">
+      <section id="home" className="relative overflow-hidden pt-32 pb-20 lg:pt-32 lg:pb-32">
         {/* Animated Background Elements */}
         <div className="absolute top-0 left-1/2 -z-10 h-[1000px] w-[1000px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-b from-teal-50/50 to-transparent blur-3xl" />
         <div className="absolute -top-24 -right-24 -z-10 h-96 w-96 rounded-full bg-emerald-50/50 blur-3xl" />
