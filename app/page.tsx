@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  MapPin, Phone, Clock, Mail, CheckCircle2, Star, ChevronRight, 
+import {
+  MapPin, Phone, Clock, Mail, CheckCircle2, Star, ChevronRight,
   Stethoscope, Syringe, ShieldCheck, Smile, Calendar, MessageSquare,
   Award, HeartPulse, UserCheck, HelpCircle
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 // Animation Variants
 const fadeIn = {
@@ -22,59 +22,130 @@ const fadeIn = {
   })
 };
 
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const staggerChildrenItem = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
+};
+
+// Data for Services
+const serviceAssets = [
+  {
+    title: "Advanced Root Canal",
+    desc: "Laser-assisted, single-sitting painless RCT procedures.",
+    character: "https://picsum.photos/seed/rct-char/400/400", 
+    icon: "https://picsum.photos/seed/rct-icon/120/120", 
+    color: "blue",
+  },
+  {
+    title: "Dental Implants",
+    desc: "Premium titanium implants for a permanent, natural smile.",
+    character: "https://picsum.photos/seed/implant-char/400/400", 
+    icon: "https://picsum.photos/seed/implant-icon/120/120", 
+    color: "teal",
+  },
+  {
+    title: "Cosmetic Veneers",
+    desc: "Transform your appearance with custom porcelain veneers.",
+    character: "https://picsum.photos/seed/veneer-chars/400/400", 
+    icon: "https://picsum.photos/seed/veneer-icon/120/120", 
+    color: "emerald",
+  },
+  {
+    title: "Orthodontics",
+    desc: "Invisalign and clear aligners for perfect teeth alignment.",
+    character: "https://picsum.photos/seed/ortho-chars/400/400", 
+    icon: "https://picsum.photos/seed/aligner-icon/120/120", 
+    color: "indigo",
+  },
+  {
+    title: "Pediatric Care",
+    desc: "A friendly, welcoming environment designed for kids.",
+    character: "https://picsum.photos/seed/pedia-chars/400/400", 
+    icon: "https://picsum.photos/seed/balloon-icon/120/120", 
+    color: "rose",
+  },
+  {
+    title: "Digital X-Rays",
+    desc: "Low-radiation 3D imaging for precise diagnosis.",
+    character: "https://picsum.photos/seed/xray-char/400/400", 
+    icon: "https://picsum.photos/seed/hologram-icon/120/120", 
+    color: "amber",
+  },
+];
+
+const serviceRingColors = {
+  blue: "group-hover:ring-blue-300",
+  teal: "group-hover:ring-teal-300",
+  emerald: "group-hover:ring-emerald-300",
+  indigo: "group-hover:ring-indigo-300",
+  rose: "group-hover:ring-rose-300",
+  amber: "group-hover:ring-amber-300",
+};
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState("all");
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-teal-100 selection:text-teal-900">
-      
+
       {/* --- Navigation --- */}
       <nav className="fixed top-6 inset-x-0 z-[100] flex justify-center px-4">
-        
-          <motion.nav
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="flex items-center justify-between w-full max-w-5xl h-14 px-3 rounded-full border border-white/40 bg-white/60 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.05)]"
-      >
-        {/* --- Logo Space --- */}
-        <Link href="/" className="flex items-center gap-3 pl-2 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-600 text-white transition-transform duration-300 group-hover:rotate-12">
-            <Smile className="h-5 w-5" />
-          </div>
-          <span className="text-sm font-bold tracking-tight text-slate-900 uppercase">
-            Vinayak
-          </span>
-        </Link>
 
-        {/* --- Minimalist Links --- */}
-        <div className="hidden md:flex items-center gap-1 bg-slate-100/50 p-1 rounded-full border border-slate-200/50">
-          {["Home", "Services", "About", "Contact"].map((item) => (
-            <Link
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="px-4 py-1.5 text-xs font-bold text-slate-500 rounded-full transition-all hover:text-slate-900 hover:bg-white"
-            >
-              {item}
-            </Link>
-          ))}
-        </div>
-
-        {/* --- Action Area --- */}
-        <div className="flex items-center gap-2">
-          <Link 
-            href="tel:+919876543210" 
-            className="hidden sm:block px-4 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-teal-600 transition-colors"
-          >
-            Support
+        <motion.nav
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="flex items-center justify-between w-full max-w-5xl h-14 px-3 rounded-full border border-white/40 bg-white/60 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.05)]"
+        >
+          {/* --- Logo Space --- */}
+          <Link href="/" className="flex items-center gap-3 pl-2 group">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-600 text-white transition-transform duration-300 group-hover:rotate-12">
+              <Smile className="h-5 w-5" />
+            </div>
+            <span className="text-sm font-bold tracking-tight text-slate-900 uppercase">
+              Vinayak
+            </span>
           </Link>
-          <Button 
-            className="h-10 px-6 rounded-full bg-slate-900 text-[11px] font-black uppercase tracking-widest text-white hover:bg-teal-600 hover:shadow-lg hover:shadow-teal-100 transition-all duration-300 active:scale-95"
-          >
-            Book Visit
-          </Button>
-        </div>
-      </motion.nav>
-       
+
+          {/* --- Minimalist Links --- */}
+          <div className="hidden md:flex items-center gap-1 bg-slate-100/50 p-1 rounded-full border border-slate-200/50">
+            {["Home", "Services", "About", "Contact"].map((item) => (
+              <Link
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="px-4 py-1.5 text-xs font-bold text-slate-500 rounded-full transition-all hover:text-slate-900 hover:bg-white"
+              >
+                {item}
+              </Link>
+            ))}
+          </div>
+
+          {/* --- Action Area --- */}
+          <div className="flex items-center gap-2">
+            <Link
+              href="tel:+919876543210"
+              className="hidden sm:block px-4 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-teal-600 transition-colors"
+            >
+              Support
+            </Link>
+            <Button
+              className="h-10 px-6 rounded-full bg-slate-900 text-[11px] font-black uppercase tracking-widest text-white hover:bg-teal-600 hover:shadow-lg hover:shadow-teal-100 transition-all duration-300 active:scale-95"
+            >
+              Book Visit
+            </Button>
+          </div>
+        </motion.nav>
+
       </nav>
 
       {/* --- Hero Section --- */}
@@ -85,7 +156,7 @@ export default function Home() {
 
         <div className="container relative mx-auto px-4 md:px-6">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-            <motion.div 
+            <motion.div
               custom={0}
               initial="hidden"
               animate="visible"
@@ -96,12 +167,12 @@ export default function Home() {
                 <span className="mr-2 flex h-2 w-2 rounded-full bg-teal-500 animate-pulse" />
                 Trusted Dental Care in Bhiwani
               </div>
-              
+
               <h1 className="text-5xl font-black tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
                 Modern Dentistry, <br />
                 <span className="bg-gradient-to-r from-teal-600 to-emerald-500 bg-clip-text text-transparent">Human Touch.</span>
               </h1>
-              
+
               <p className="max-w-[540px] text-lg leading-relaxed text-slate-600 md:text-xl">
                 Combining 15+ years of clinical excellence with state-of-the-art technology to give you a smile that radiates confidence.
               </p>
@@ -137,7 +208,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -154,7 +225,7 @@ export default function Home() {
               </div>
 
               {/* Interactive Floating Card */}
-              <motion.div 
+              <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute -bottom-8 -left-8 rounded-3xl bg-white p-6 shadow-2xl ring-1 ring-slate-100"
@@ -195,70 +266,146 @@ export default function Home() {
       </section>
 
       {/* --- Services Section --- */}
-      <section id="services" className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="mb-16 flex flex-col items-center text-center space-y-4">
-            <h2 className="text-sm font-black uppercase tracking-[0.3em] text-teal-600">Our Expertise</h2>
-            <h3 className="text-4xl font-bold text-slate-900 sm:text-5xl">Specialized Dental Solutions</h3>
-            <p className="max-w-2xl text-lg text-slate-500 leading-relaxed">
-              We provide comprehensive care using the latest painless technology, ensuring every visit is stress-free.
-            </p>
-          </div>
+      <section id="services" className="py-24 bg-gradient-to-b from-slate-50/50 to-white">
+        <div className="container mx-auto px-4 md:px-6">
+          
+          {/* Entrance staggered reveal of header */}
+          <motion.div 
+            initial="hidden" 
+            whileInView="visible" 
+            viewport={{ once: true, amount: 0.3 }}
+            variants={staggerContainer}
+            className="mb-16 flex flex-col items-center text-center space-y-4"
+          >
+            {/* Subtitle */}
+            <motion.h2 
+              variants={staggerChildrenItem} 
+              className="text-sm font-black uppercase tracking-[0.3em] text-teal-600"
+            >
+              Our Expertise
+            </motion.h2>
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                title: "Advanced Root Canal",
-                desc: "Laser-assisted, single-sitting painless RCT procedures.",
-                icon: Stethoscope,
-                color: "bg-blue-500"
-              },
-              {
-                title: "Dental Implants",
-                desc: "Premium titanium implants for a permanent, natural smile.",
-                icon: ShieldCheck,
-                color: "bg-teal-500"
-              },
-              {
-                title: "Cosmetic Veneers",
-                desc: "Transform your appearance with custom porcelain veneers.",
-                icon: Smile,
-                color: "bg-emerald-500"
-              },
-              {
-                title: "Orthodontics",
-                desc: "Invisalign and clear aligners for perfect teeth alignment.",
-                icon: CheckCircle2,
-                color: "bg-indigo-500"
-              },
-              {
-                title: "Pediatric Care",
-                desc: "A friendly, welcoming environment designed for kids.",
-                icon: HeartPulse,
-                color: "bg-rose-500"
-              },
-              {
-                title: "Digital X-Rays",
-                desc: "Low-radiation 3D imaging for precise diagnosis.",
-                icon: UserCheck,
-                color: "bg-amber-500"
-              },
-            ].map((service, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ y: -10 }}
-                className="group relative rounded-[2rem] bg-white p-8 shadow-xl shadow-slate-100 ring-1 ring-slate-100 transition-all hover:shadow-teal-100"
-              >
-                <div className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg ${service.color}`}>
-                  <service.icon className="h-7 w-7" />
-                </div>
-                <h4 className="mb-3 text-xl font-bold text-slate-900">{service.title}</h4>
-                <p className="mb-6 text-slate-500 leading-relaxed">{service.desc}</p>
-                <Link href="#" className="flex items-center text-sm font-bold text-teal-600 group-hover:gap-2 transition-all">
-                  Read more <ChevronRight className="h-4 w-4" />
-                </Link>
-              </motion.div>
-            ))}
+            {/* Title */}
+            <motion.h3 
+              variants={staggerChildrenItem} 
+              className="text-4xl font-bold text-slate-900 sm:text-5xl"
+            >
+              Specialized Dental Solutions
+            </motion.h3>
+
+            {/* Paragraph */}
+            <motion.p 
+              variants={staggerChildrenItem} 
+              className="max-w-2xl text-lg text-slate-500 leading-relaxed"
+            >
+              We provide comprehensive care using the latest painless technology, ensuring every visit is stress-free.
+            </motion.p>
+          </motion.div>
+
+          {/* Grid - refined spacing */}
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            {serviceAssets.map((service, index) => {
+              // Pick the specific ring color from our mapping
+              const ringColor = serviceRingColors[service.color as keyof typeof serviceRingColors] || "group-hover:ring-teal-300";
+
+              return (
+                <motion.div
+                  key={index}
+                  whileHover={{ 
+                    y: -12, 
+                    scale: 1.02, 
+                    transition: { duration: 0.3, ease: "easeOut" } 
+                  }}
+                  className={`group relative rounded-[2.5rem] bg-white p-10 shadow-xl shadow-slate-100/80 ring-1 ring-slate-100/50 transition-all hover:shadow-2xl hover:shadow-teal-100/50`}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
+                  {/* Micro-interaction Colored Ring */}
+                  <div 
+                    className={`absolute -inset-1 rounded-[2.5rem] ring-4 ring-transparent ${ringColor} transition-all duration-300 opacity-0 group-hover:opacity-100`}
+                  />
+
+                  {/* Staggered Content Layer with 3D assets */}
+                  <div className="flex flex-col space-y-8 relative">
+                    
+                    {/* Character/Icon Scene Layer - Creating depth */}
+                    <div className="relative h-60 w-full flex items-center justify-center -mt-6"> {/* Negative margin to lift assets */}
+                      
+                      {/* Character/Scene (Positioned bottom left/center) */}
+                      <motion.div
+                        animate={{
+                          y: hoveredIndex === index ? -5 : 0,
+                          rotate: hoveredIndex === index ? -2 : 0,
+                          transition: { duration: 0.4, ease: "easeOut" }
+                        }}
+                        className="absolute bottom-0 left-0"
+                      >
+                        <Image 
+                          src={service.character} 
+                          alt={`${service.title} Scene`} 
+                          width={280} 
+                          height={280} 
+                          className="object-contain"
+                        />
+                      </motion.div>
+
+                      {/* 3D Icon (Positioned center, interaction point) */}
+                      <motion.div
+                        animate={{
+                          scale: hoveredIndex === index ? 1.08 : 1,
+                          x: hoveredIndex === index ? 10 : 0,
+                          y: hoveredIndex === index ? -10 : 0,
+                          transition: { duration: 0.4, ease: "easeOut", delay: 0.05 }
+                        }}
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-5 rounded-3xl bg-white shadow-xl group-hover:shadow-teal-100/50"
+                      >
+                        <Image 
+                          src={service.icon} 
+                          alt={`${service.title} 3D Icon`} 
+                          width={88} 
+                          height={88} 
+                          className="object-contain"
+                        />
+                      </motion.div>
+                    </div>
+
+                    {/* Text Content - Refined typography spacing */}
+                    <div className="space-y-4">
+                      <motion.h4 
+                        animate={{
+                          x: hoveredIndex === index ? 5 : 0,
+                          transition: { duration: 0.3 }
+                        }}
+                        className="text-xl font-bold text-slate-900"
+                      >
+                        {service.title}
+                      </motion.h4>
+                      <p className="text-slate-500 leading-relaxed text-base">
+                        {service.desc}
+                      </p>
+                    </div>
+
+                    {/* Link with moving chevron */}
+                    <div className="pt-2">
+                      <Link href="#" className="flex items-center text-sm font-bold text-teal-600">
+                        <span className="relative group">
+                          Read more 
+                          <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-teal-600 transition-all group-hover:w-full" />
+                        </span>
+                        <motion.span
+                          animate={{
+                            x: hoveredIndex === index ? 8 : 0,
+                            transition: { duration: 0.3 }
+                          }}
+                        >
+                          <ChevronRight className="h-4 w-4 ml-1.5" />
+                        </motion.span>
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
