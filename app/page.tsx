@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Instagram, Facebook} from "lucide-react";
+
 import { motion, AnimatePresence } from "motion/react";
 
 // Animation Variants
@@ -95,6 +97,7 @@ const serviceRingColors = {
 export default function Home() {
   const [activeTab, setActiveTab] = useState("all");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const currentYear = new Date().getFullYear();
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-teal-100 selection:text-teal-900">
@@ -521,26 +524,84 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- Footer --- */}
-      <footer className="bg-slate-50 py-12 border-t border-slate-200">
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-2.5 mb-6">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-600 text-white">
-              <Smile className="h-5 w-5" />
+<footer className="relative mt-24 pb-12 overflow-hidden">
+      {/* Soft background transition */}
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-50 to-transparent -z-10" />
+
+      <div className="container mx-auto px-4">
+        {/* Main Footer Island */}
+        <div className="flex flex-col items-center">
+          
+          {/* Logo & Brand - Minimalist Version */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col items-center gap-4 mb-12"
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-xl shadow-slate-200/50 border border-slate-100 text-teal-600">
+              <Smile className="h-6 w-6" />
             </div>
-            <span className="text-lg font-bold tracking-tight text-slate-900">Vinayak Dental</span>
+            <div className="text-center">
+              <h2 className="text-lg font-bold tracking-tighter text-slate-900 uppercase">
+                Vinayak <span className="text-teal-600">Dental</span>
+              </h2>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mt-1">
+                Excellence in Bhiwani since 2008
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Minimalist Navigation Row */}
+          <nav className="flex flex-wrap justify-center gap-x-10 gap-y-4 mb-12">
+            {["Home", "Services", "About", "Contact", "Privacy"].map((item) => (
+              <Link
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="text-[11px] font-black uppercase tracking-widest text-slate-500 hover:text-teal-600 transition-colors"
+              >
+                {item}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Social Icons - Clean & Floating */}
+          <div className="flex items-center gap-4 mb-12">
+            {[
+              { icon: Instagram, label: "Instagram", href: "#" },
+              { icon: Facebook, label: "Facebook", href: "#" },
+              { icon: MapPin, label: "Google Maps", href: "#" },
+            ].map((social) => (
+              <Link
+                key={social.label}
+                href={social.href}
+                className="group flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-100 shadow-sm transition-all hover:shadow-md hover:-translate-y-1 hover:border-teal-100"
+              >
+                <social.icon className="h-4 w-4 text-slate-400 group-hover:text-teal-600 transition-colors" />
+                <span className="sr-only">{social.label}</span>
+              </Link>
+            ))}
           </div>
-          <p className="text-sm text-slate-500 mb-6">Providing quality dental care since 2008 in Bhiwani, Haryana.</p>
-          <div className="flex justify-center gap-8 mb-8">
-            <Link href="#" className="text-slate-400 hover:text-teal-600 transition-colors">Facebook</Link>
-            <Link href="#" className="text-slate-400 hover:text-teal-600 transition-colors">Instagram</Link>
-            <Link href="#" className="text-slate-400 hover:text-teal-600 transition-colors">Google Maps</Link>
-          </div>
-          <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
-            &copy; {new Date().getFullYear()} Vinayak Dental Clinic. All Rights Reserved.
+
+          {/* Divider Dot */}
+          <div className="h-1 w-1 rounded-full bg-teal-200 mb-8" />
+
+          {/* Bottom Legal - Very Minimal */}
+          <div className="flex flex-col items-center gap-2">
+            <p className="text-[10px] font-medium text-slate-400 tracking-wide">
+              &copy; {currentYear} Vinayak Dental Clinic. Crafted with Care.
+            </p>
+            <div className="flex items-center gap-4">
+              <span className="h-[1px] w-4 bg-slate-200" />
+              <span className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-300">
+                Premium Oral Healthcare
+              </span>
+              <span className="h-[1px] w-4 bg-slate-200" />
+            </div>
           </div>
         </div>
-      </footer>
+      </div>
+    </footer>
     </div>
   );
 }
